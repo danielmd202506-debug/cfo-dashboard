@@ -23,7 +23,7 @@
     h1{margin:0;font-size:34px;line-height:1.12;letter-spacing:0;text-shadow:0 0 16px rgba(44,180,255,.58)}
     .sub{margin-top:9px;color:#a9cdec;font-size:17px}
     .clock-block{justify-self:start;color:#dcefff;font-size:15px;text-align:left}.time{font-size:29px;color:#fff}.top{display:flex;gap:10px;align-items:center;justify-content:flex-end;color:#dcefff;font-size:15px;text-align:center}.chip{min-width:70px;border:1px solid rgba(59,174,255,.52);border-radius:6px;padding:9px 10px;background:rgba(5,30,58,.78);box-shadow:inset 0 0 18px rgba(33,152,255,.12)}button.chip{color:#dcefff;font:inherit;font-weight:700;cursor:pointer}
-    .nav{display:flex;gap:12px;border-bottom:1px solid rgba(42,145,215,.42);min-height:0}.nav span{min-width:112px;text-align:center;padding:9px 10px;color:#d9ecff;font-size:16px}.nav .active{background:linear-gradient(180deg,#0d69db,#0a376e);border-bottom:2px solid #32e5ff;border-radius:4px 4px 0 0}
+    .nav{display:flex;gap:12px;border-bottom:1px solid rgba(42,145,215,.42);min-height:0}.nav span{min-width:112px;text-align:center;padding:9px 10px;color:#d9ecff;font-size:16px;cursor:pointer}.nav .active{background:linear-gradient(180deg,#0d69db,#0a376e);border-bottom:2px solid #32e5ff;border-radius:4px 4px 0 0}
     .kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;min-height:0}.card{background:linear-gradient(180deg,rgba(9,43,80,.95),rgba(4,23,45,.94));border:1px solid rgba(53,153,226,.54);border-radius:7px;box-shadow:inset 0 0 18px rgba(35,141,255,.09),0 0 14px rgba(0,104,255,.09)}
     .kpi{padding:13px 14px;position:relative}.kpi .label{max-width:68%;color:#e7f4ff;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kpi .value{margin-top:20px;font-size:30px;line-height:1}.kpi .up{position:absolute;top:13px;right:12px;max-width:36%;color:#2cffb1;font-size:14px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.spark{position:absolute;left:12px;right:12px;bottom:7px;height:22px}
     .main{display:grid;grid-template-columns:21% 52% 27%;gap:10px;min-height:0}.col{display:grid;gap:10px;min-height:0}.left{grid-template-rows:27% 27% minmax(0,46%)}.center{grid-template-rows:58% minmax(0,42%)}.right{grid-template-rows:24% 29% 27% minmax(0,20%)}
@@ -34,6 +34,7 @@
     .legend{position:absolute;left:12px;bottom:6px;display:flex;gap:14px;color:#f4fbff;font-size:14px}.legend i{display:inline-block;width:24px;height:3px;margin-right:6px;vertical-align:middle;border-radius:3px}.cargo{background:#ffc02f}.cash{background:#58ff8e}
     .bar-row{display:grid;grid-template-columns:28px 54px 1fr 72px;gap:8px;align-items:center;margin:10px 0;font-size:16px}.rank{background:#344f70;border-radius:5px;text-align:center;padding:3px 0}.bar{height:13px;border-radius:8px;background:#071b33;overflow:hidden}.bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#2d62ff,#34e8ff)}
     table{width:100%;border-collapse:collapse;font-size:14px;color:#e8f6ff}th,td{padding:8px 7px;border-bottom:1px solid rgba(55,137,202,.2);text-align:left}th{color:#c2ddf7;background:rgba(20,70,110,.36)}.status{color:#37ffa2}.risk{color:#ffd25a}
+    .module-note{height:calc(100% - 42px);display:grid;align-content:start;gap:10px;color:#d8ecff;font-size:14px}.note-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:8px 0;border-bottom:1px solid rgba(55,137,202,.18)}.note-row b{color:#38e7ff}.tag{display:inline-block;padding:3px 8px;border-radius:4px;background:rgba(31,130,218,.25);color:#86e9ff}
     .footer{display:flex;justify-content:space-between;align-items:end;color:#a8c5df;font-size:12px;min-height:0;overflow:hidden}
     @media (max-width:1200px){.screen{grid-template-rows:60px 34px 98px minmax(0,1fr) 18px;padding:10px 14px 8px;gap:6px}.header:before{left:24%;right:24%;height:36px}.title-block{padding:0 36px}.title-block:before,.title-block:after{width:32px}h1{font-size:25px}.sub{font-size:13px;margin-top:5px}.nav span{font-size:13px;min-width:82px;padding:8px 7px}.clock-block{font-size:11px}.time{font-size:20px}.chip{font-size:11px;min-width:54px;padding:6px 7px}.kpi{padding:9px}.kpi .label{font-size:13px;max-width:66%}.kpi .value{font-size:21px;margin-top:18px}.kpi .up{top:9px;right:8px;font-size:11px;max-width:38%}.panel{padding:8px}.panel-title{font-size:15px}.map-title{font-size:19px}.map-metric b{font-size:15px}table{font-size:11px}th,td{padding:5px 4px}.footer{font-size:10px}}
   </style>
@@ -98,9 +99,55 @@ const dashboardData={
   orders:[['海运运输中',32,'12.74M','2026-06-05','进行中'],['迪拜仓储',21,'5.18M','2026-06-06','正常'],['沙特配送中',18,'7.26M','2026-06-07','进行中'],['欧洲铁路联运',15,'4.62M','2026-06-08','正常'],['合计',86,'29.80M','-','-']],
   alerts:[['汇率波动较大，关注汇率走势','高'],['部分客户回款周期延长','中']]
 };
+const modules={
+  '财务表现':{
+    kpis:[['营业收入','128.45M','达成率 92.6%','#16b9ff'],['毛利额','26.78M','同比 ↑ 19.8%','#6cff4a'],['费用率','16.5%','环比 ↓ 1.2pp','#ffa400'],['EBITDA','14.26M','预算差 +2.1M','#b75cff'],['净利率','5.2%','同比 ↑ 0.8pp','#10ffd4'],['AR 周转天数','41天','缩短 4天','#23d2ff'],['ROIC','12.8%','同比 ↑ 1.6pp','#ffb21f']],
+    charts:[['收入与利润趋势','line',{收入:[88,92,96,101,98,108,112,116,119,124,126,128],毛利:[18,19,21,22,21,23,24,25,26,26,27,28],净利润:[4,5,5,6,5,6,6,7,7,7,7,8]}],['费用结构','pie',[['采购成本',48],['物流仓储',24],['销售费用',16],['管理费用',9],['财务费用',3]]],['预算执行偏差','bar',{实际:[94,97,103,98,106,112],预算:[90,96,100,102,104,108]}]],
+    table:['财务科目',['收入','毛利','费用','净利润'],[['主营业务收入','128.45M','同比 +23.6%','正常'],['综合毛利','26.78M','同比 +19.8%','正常'],['期间费用','21.24M','环比 -3.2%','关注'],['净利润','6.72M','同比 +17.5%','正常']]],
+    notes:[['毛利改善来自高毛利区域占比提升','+1.8pp'],['费用率受物流成本下降带动改善','-1.2pp'],['汇兑损益仍需每日跟踪','高']]
+  },
+  '销售分析':{
+    kpis:[['销售额','136.20M','同比 ↑ 25.1%','#16b9ff'],['新增客户','286','环比 ↑ 18','#6cff4a'],['客单价','47.6K','同比 ↑ 8.4%','#ffa400'],['商机金额','52.80M','阶段覆盖 3.1x','#b75cff'],['复购率','61.5%','同比 ↑ 4.2pp','#10ffd4'],['转化率','28.7%','环比 ↑ 2.0pp','#23d2ff'],['退货率','1.8%','环比 ↓ 0.4pp','#ffb21f']],
+    charts:[['销售漏斗','bar',{线索:[180],商机:[126],报价:[76],订单:[42]}],['渠道销售占比','pie',[['直营',42],['分销',31],['电商',16],['项目制',11]]],['区域销售趋势','line',{中东:[32,35,39,42,45,48],欧洲:[24,26,29,31,34,35],亚太:[14,15,16,17,18,20]}]],
+    table:['客户/区域',['本月销售','订单数','转化率','状态'],[['中东大客户','18.42M','48','34%','推进中'],['欧洲渠道','12.76M','36','29%','正常'],['亚太项目','8.18M','24','26%','正常'],['非洲分销','5.64M','19','21%','关注']]],
+    notes:[['重点客户续约进入报价阶段','12.4M'],['欧洲渠道库存消化快于预期','良好'],['低毛利订单审批需前置','执行中']]
+  },
+  '供应链运营':{
+    kpis:[['在途订单','86','新增 15','#16b9ff'],['准时交付率','94.2%','环比 ↑ 1.8pp','#6cff4a'],['库存周转','6.8次','同比 ↑ 0.7','#ffa400'],['缺货风险','7项','减少 3项','#b75cff'],['物流成本率','5.6%','环比 ↓ 0.8pp','#10ffd4'],['仓库利用率','78%','正常','#23d2ff'],['异常单','9','待处理','#ffb21f']],
+    charts:[['订单履约趋势','line',{创建:[42,48,51,47,56,62],发运:[38,45,49,46,53,59],签收:[34,41,46,43,51,57]}],['库存结构','pie',[['成品',46],['在制',18],['原料',24],['安全库存',12]]],['物流方式成本','bar',{海运:[8,9,10,9,8,7],空运:[4,5,6,4,3,4],陆运:[3,4,4,5,4,4]}]],
+    table:['节点',['订单数','金额','ETA','状态'],dashboardData.orders],
+    notes:[['海运舱位锁定率','92%'],['重点 SKU 安全库存覆盖','21天'],['异常订单平均处理时长','6.4小时']]
+  },
+  '预算与预测':{
+    kpis:[['年度预算','156.00M','已用 82.3%','#16b9ff'],['收入预测','168.40M','较预算 +8.0%','#6cff4a'],['费用预测','27.80M','较预算 -2.4%','#ffa400'],['利润预测','8.40M','较预算 +1.1M','#b75cff'],['预测准确率','91.2%','环比 ↑ 1.5pp','#10ffd4'],['预算偏差','+3.6%','可控','#23d2ff'],['滚动周期','12个月','已更新','#ffb21f']],
+    charts:[['预算 vs 实际','bar',{实际:[18,22,25,29,34,38],预算:[20,22,24,28,32,36]}],['滚动预测','line',{保守:[126,132,138,144,150,156],基准:[132,139,146,153,161,168],乐观:[138,146,154,162,171,180]}],['费用预算分布','pie',[['采购',48],['物流',20],['市场',14],['人力',10],['其他',8]]]],
+    table:['预算项',['预算','实际/预测','偏差','状态'],[['收入','156.00M','168.40M','+8.0%','良好'],['费用','28.50M','27.80M','-2.4%','正常'],['利润','7.30M','8.40M','+15.1%','良好'],['现金流','9.20M','8.80M','-4.3%','关注']]],
+    notes:[['Q3 收入预测上调','+6.2M'],['物流费用预算释放空间','0.7M'],['汇率情景模型已纳入预测','完成']]
+  },
+  '现金流':{
+    kpis:[['现金余额','15.32M','较上月 ↑ 1.45M','#16b9ff'],['经营现金流','8.11M','同比 ↑ 21.3%','#6cff4a'],['回款金额','18.74M','同比 ↑ 22.1%','#ffa400'],['付款金额','13.28M','按计划','#b75cff'],['DSO','41天','缩短 4天','#10ffd4'],['授信占用','62%','正常','#23d2ff'],['现金覆盖','4.8月','安全','#ffb21f']],
+    charts:[['现金流趋势','line',dashboardData.cash],['回款账龄','pie',dashboardData.ar],['现金流入流出','bar',{流入:[16,18,21,19,24,26],流出:[13,14,17,15,20,21]}]],
+    table:['现金事项',['金额','日期','对象','状态'],[['客户回款','4.26M','2026-06-03','欧洲渠道','确认中'],['供应商付款','2.18M','2026-06-04','物流承运商','待审批'],['税费支付','0.82M','2026-06-10','税务','计划中'],['银行授信','6.00M','2026-06-15','合作银行','可用']]],
+    notes:[['未来 30 天净现金流','+3.8M'],['大额付款审批集中在月中','关注'],['逾期回款客户已进入催收节奏','执行中']]
+  },
+  '风险与合规':{
+    kpis:[['风险事项','18','高风险 3','#ffb21f'],['合规通过率','97.8%','环比 ↑ 0.6pp','#6cff4a'],['逾期应收','2.40M','环比 ↓ 0.3M','#ffa400'],['汇率敞口','8.60M','已对冲 62%','#b75cff'],['审计问题','5','待关闭 2','#10ffd4'],['合同异常','7','处理中','#23d2ff'],['预警命中率','86%','稳定','#16b9ff']],
+    charts:[['风险等级分布','pie',[['高',3],['中',8],['低',7]]],['风险趋势','line',{高风险:[5,4,4,3,3,3],中风险:[9,10,8,8,9,8],低风险:[6,7,8,8,7,7]}],['合规检查项','bar',{通过:[92,95,98,96,97,98],未通过:[8,5,2,4,3,2]}]],
+    table:['风险项',['影响金额','责任部门','截止日','状态'],[['汇率波动','8.60M','财务','2026-06-05','跟踪'],['逾期回款','2.40M','销售','2026-06-08','处理中'],['合同条款缺失','0.80M','法务','2026-06-10','整改'],['物流延迟','1.20M','供应链','2026-06-12','预警']]],
+    notes:[['高风险事项需每日复盘','3项'],['本月审计问题关闭率','60%'],['制裁名单筛查全部通过','完成']]
+  },
+  '报告中心':{
+    kpis:[['已生成报告','42','本月 +8','#16b9ff'],['待审批报告','6','平均 1.8天','#6cff4a'],['自动化率','78%','同比 ↑ 12pp','#ffa400'],['订阅用户','36','新增 5','#b75cff'],['数据新鲜度','15分钟','正常','#10ffd4'],['异常报表','2','待修复','#23d2ff'],['下载次数','286','本月','#ffb21f']],
+    charts:[['报告使用趋势','line',{经营日报:[22,24,28,31,35,38],财务月报:[8,9,10,10,11,12],风险周报:[6,7,7,8,8,9]}],['报告类型分布','pie',[['经营日报',36],['财务月报',24],['销售分析',18],['风险合规',12],['临时报表',10]]],['部门订阅量','bar',{财务:[28],销售:[24],供应链:[21],管理层:[18],法务:[9]}]],
+    table:['报告名称',['频率','负责人','更新时间','状态'],[['经营总览日报','每日','财务运营','09:00','已发布'],['现金流周报','每周','资金组','周一','已发布'],['销售区域分析','每周','销售运营','周三','审批中'],['风险合规月报','每月','风控','月末','生成中']]],
+    notes:[['管理层订阅报表准时率','100%'],['异常数据源自动重试','开启'],['PDF 导出模板待统一','进行中']]
+  }
+};
 const textStyle={color:'#eaf7ff',fontFamily:'Source Han Sans SC, Microsoft YaHei, SimHei',fontWeight:700};
-const charts=[];
-function init(id){const c=echarts.init(document.getElementById(id));charts.push(c);return c}
+let charts=[];
+let overviewMainHtml='';
+function clearCharts(){charts.forEach(c=>c.dispose && c.dispose());charts=[];}
+function init(id){const el=document.getElementById(id);const old=echarts.getInstanceByDom(el);if(old)old.dispose();const c=echarts.init(el);charts.push(c);return c}
 function renderStatic(){
   document.getElementById('kpis').innerHTML=dashboardData.kpis.map((k,i)=>`<div class="card kpi"><div class="label">${k[0]}</div><div class="value">${k[1]}</div><div class="up">${k[2]}</div><div id="s${i}" class="spark"></div></div>`).join('');
   dashboardData.kpis.forEach((k,i)=>spark(`s${i}`,k[3]));
@@ -117,6 +164,79 @@ function spark(id,color){init(id).setOption({grid:{left:0,right:0,top:2,bottom:0
 function donut(id,title,total,data){init(id).setOption({tooltip:{trigger:'item'},legend:{right:4,top:10,orient:'vertical',textStyle},series:[{type:'pie',radius:['55%','78%'],center:['28%','50%'],label:{show:false},data:data.map(([name,value])=>({name,value}))},{type:'pie',radius:['0%','0%'],center:['28%','50%'],label:{position:'center',formatter:`${total}\n${title}`,fontSize:20,color:'#fff',fontWeight:700},data:[{value:1}]}]})}
 function lineChart(id,seriesMap){init(id).setOption({textStyle,grid:{left:42,right:24,top:28,bottom:28},legend:{top:0,textStyle,data:Object.keys(seriesMap)},xAxis:{type:'category',axisLabel:{color:'#d8ecff'},data:dashboardData.months},yAxis:{type:'value',axisLabel:{color:'#d8ecff'},splitLine:{lineStyle:{color:'rgba(120,180,255,.12)'}}},series:Object.entries(seriesMap).map(([name,data])=>({name,type:'line',smooth:true,symbol:'circle',symbolSize:5,data}))})}
 function cashChart(){init('cash').setOption({textStyle,grid:{left:42,right:20,top:28,bottom:26},legend:{top:0,textStyle,data:Object.keys(dashboardData.cash)},xAxis:{type:'category',axisLabel:{color:'#d8ecff'},data:dashboardData.months},yAxis:{type:'value',axisLabel:{color:'#d8ecff'},splitLine:{lineStyle:{color:'rgba(120,180,255,.12)'}}},series:Object.entries(dashboardData.cash).map(([name,data])=>({name,type:name==='现金余额'?'line':'bar',data}))})}
+function renderKpis(kpis){
+  document.getElementById('kpis').innerHTML=kpis.map((k,i)=>`<div class="card kpi"><div class="label">${k[0]}</div><div class="value">${k[1]}</div><div class="up">${k[2]}</div><div id="s${i}" class="spark"></div></div>`).join('');
+  kpis.forEach((k,i)=>spark(`s${i}`,k[3]));
+}
+function tableHtml(config){
+  const [first,headers,rows]=config;
+  return `<table><tr><th>${first}</th>${headers.map(h=>`<th>${h}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map((v,i)=>`<td class="${i===r.length-1?'status':''}">${v}</td>`).join('')}</tr>`).join('')}</table>`;
+}
+function notesHtml(notes){
+  return `<div class="module-note">${notes.map(n=>`<div class="note-row"><span>${n[0]}</span><b>${n[1]}</b></div>`).join('')}</div>`;
+}
+function panelHtml(title,unit,body){
+  return `<div class="card panel"><div class="panel-title">${title}</div><div class="unit">${unit}</div>${body}</div>`;
+}
+function renderModule(name){
+  const cfg=modules[name];
+  clearCharts();
+  renderKpis(cfg.kpis);
+  document.querySelector('.main').innerHTML=`
+    <div class="col left">
+      ${panelHtml(cfg.charts[0][0],'单位：USD / 指标值','<div id="moduleChart0" class="chart"></div>')}
+      ${panelHtml(cfg.charts[1][0],'结构占比','<div id="moduleChart1" class="chart"></div>')}
+      ${panelHtml('关键事项摘要','运营重点',notesHtml(cfg.notes))}
+    </div>
+    <div class="col center">
+      ${panelHtml(cfg.charts[2][0],'近 6 期数据','<div id="moduleChart2" class="chart"></div>')}
+      ${panelHtml(`${name}明细`, '核心业务清单', tableHtml(cfg.table))}
+    </div>
+    <div class="col right">
+      ${panelHtml('本期关注', '自动识别异常与机会', notesHtml(cfg.notes.concat(cfg.notes).slice(0,4)))}
+      ${panelHtml('执行状态', '任务闭环进度', '<div id="moduleGauge" class="chart"></div>')}
+      ${panelHtml('数据质量', '同步 / 校验 / 审批', '<div id="moduleQuality" class="chart"></div>')}
+      ${panelHtml('下次更新', '系统计划', '<div class="module-note"><div class="note-row"><span>刷新频率</span><b>60s</b></div><div class="note-row"><span>数据源</span><b>已连接</b></div></div>')}
+    </div>`;
+  drawModuleChart('moduleChart0',cfg.charts[0][1],cfg.charts[0][2]);
+  drawModuleChart('moduleChart1',cfg.charts[1][1],cfg.charts[1][2]);
+  drawModuleChart('moduleChart2',cfg.charts[2][1],cfg.charts[2][2]);
+  drawGauge('moduleGauge',name==='风险与合规'?76:88);
+  drawQuality('moduleQuality');
+}
+function drawModuleChart(id,type,data){
+  const chart=init(id);
+  if(type==='pie'){
+    chart.setOption({textStyle,tooltip:{trigger:'item'},legend:{right:4,top:8,orient:'vertical',textStyle},series:[{type:'pie',radius:['45%','72%'],center:['34%','52%'],label:{show:false},data:data.map(([name,value])=>({name,value}))}]});
+    return;
+  }
+  const keys=Object.keys(data);
+  const single=keys.every(k=>data[k].length===1);
+  const x=single?keys:dashboardData.months.slice(-Math.max(...keys.map(k=>data[k].length)));
+  const series=single?[{name:'数值',type:'bar',barWidth:22,data:keys.map(k=>data[k][0]),itemStyle:{color:'#26dfff'}}]:keys.map(k=>({name:k,type,barMaxWidth:18,smooth:true,data:data[k]}));
+  chart.setOption({textStyle,tooltip:{trigger:'axis'},grid:{left:42,right:20,top:30,bottom:28},legend:{top:0,textStyle,data:single?[]:keys},xAxis:{type:'category',axisLabel:{color:'#d8ecff'},data:x},yAxis:{type:'value',axisLabel:{color:'#d8ecff'},splitLine:{lineStyle:{color:'rgba(120,180,255,.12)'}}},series});
+}
+function drawGauge(id,value){
+  init(id).setOption({series:[{type:'gauge',radius:'86%',startAngle:210,endAngle:-30,min:0,max:100,progress:{show:true,width:10,itemStyle:{color:'#2ee6ff'}},axisLine:{lineStyle:{width:10,color:[[1,'rgba(77,164,232,.18)']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{color:'#cfe8ff',fontSize:10},pointer:{width:4},detail:{valueAnimation:true,formatter:'{value}%',color:'#fff',fontSize:22,fontWeight:700},data:[{value}]}]});
+}
+function drawQuality(id){
+  init(id).setOption({textStyle,grid:{left:42,right:18,top:14,bottom:24},xAxis:{type:'category',axisLabel:{color:'#d8ecff'},data:['同步','校验','审批','归档']},yAxis:{type:'value',max:100,axisLabel:{color:'#d8ecff'},splitLine:{lineStyle:{color:'rgba(120,180,255,.12)'}}},series:[{type:'bar',barWidth:18,itemStyle:{color:'#36e7ff'},data:[98,96,89,94]}]});
+}
+function renderOverview(){
+  clearCharts();
+  document.querySelector('.main').innerHTML=overviewMainHtml;
+  renderStatic();donut('donut1','总收入','128.45M',dashboardData.revenue);donut('donut2','总费用','21.24M',dashboardData.expense);donut('donut3','总应收账款','25.68M',dashboardData.ar);lineChart('line1',dashboardData.trend);cashChart();renderMaps();
+}
+function bindTabs(){
+  document.querySelectorAll('.nav span').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.nav span').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const name=tab.textContent.trim();
+      if(name==='总览')renderOverview();else renderModule(name);
+    });
+  });
+}
 function mapOption(mapName,areaData,flows,zoom,center){
   const cargo=flows.cargo.map(v=>({coords:v}));
   const cash=flows.cash.map(v=>({coords:v}));
@@ -199,7 +319,7 @@ function bindFullscreen(){
     setTimeout(()=>charts.forEach(c=>c.resize()),120);
   });
 }
-renderStatic();donut('donut1','总收入','128.45M',dashboardData.revenue);donut('donut2','总费用','21.24M',dashboardData.expense);donut('donut3','总应收账款','25.68M',dashboardData.ar);lineChart('line1',dashboardData.trend);cashChart();renderMaps();tick();bindFullscreen();setInterval(tick,1000);window.addEventListener('resize',()=>charts.forEach(c=>c.resize()));
+overviewMainHtml=document.querySelector('.main').innerHTML;renderOverview();bindTabs();tick();bindFullscreen();setInterval(tick,1000);window.addEventListener('resize',()=>charts.forEach(c=>c.resize()));
 </script>
 </body>
 </html>
