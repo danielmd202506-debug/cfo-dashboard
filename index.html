@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFO 经营管理驾驶舱</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;background:#020714;color:#f4fbff;font-family:"Source Han Sans SC","Noto Sans CJK SC","Microsoft YaHei","SimHei",Arial,sans-serif;font-weight:700;overflow:hidden}
+    body{display:grid;place-items:center}
+    .screen{position:relative;width:min(100vw,177.7778vh);height:min(56.25vw,100vh);aspect-ratio:16/9;padding:18px 24px 16px;background:radial-gradient(circle at 50% 0%,#0c3562 0,#071a32 39%,#020713 100%);overflow:hidden}
+    .screen:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none}
+    .screen:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:radial-gradient(circle at 50% 44%,#000 0,transparent 72%)}
+    .header,.nav,.kpis,.main,.footer{position:relative;z-index:1}
+    .header{display:grid;grid-template-columns:1fr auto 1fr;align-items:flex-start;height:78px}
+    .title-block{text-align:center}
+    h1{margin:0;font-size:34px;line-height:1.12;letter-spacing:0;text-shadow:0 0 16px rgba(44,180,255,.58)}
+    .sub{margin-top:9px;color:#a9cdec;font-size:17px}
+    .top{display:flex;gap:10px;align-items:center;justify-content:flex-end;color:#dcefff;font-size:15px;text-align:center}.time{font-size:29px;color:#fff}.chip{min-width:70px;border:1px solid rgba(59,174,255,.52);border-radius:6px;padding:9px 10px;background:rgba(5,30,58,.78);box-shadow:inset 0 0 18px rgba(33,152,255,.12)}button.chip{color:#dcefff;font:inherit;font-weight:700;cursor:pointer}
+    .nav{height:40px;display:flex;gap:12px;border-bottom:1px solid rgba(42,145,215,.42);margin-bottom:10px}.nav span{min-width:112px;text-align:center;padding:10px 10px;color:#d9ecff;font-size:17px}.nav .active{background:linear-gradient(180deg,#0d69db,#0a376e);border-bottom:2px solid #32e5ff;border-radius:4px 4px 0 0}
+    .kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;height:122px}.card{background:linear-gradient(180deg,rgba(9,43,80,.95),rgba(4,23,45,.94));border:1px solid rgba(53,153,226,.54);border-radius:7px;box-shadow:inset 0 0 18px rgba(35,141,255,.09),0 0 14px rgba(0,104,255,.09)}
+    .kpi{padding:13px 14px;position:relative}.kpi .label{color:#e7f4ff;font-size:16px;white-space:nowrap}.kpi .value{margin-top:8px;font-size:30px;line-height:1}.kpi .up{margin-top:9px;color:#2cffb1;font-size:15px}.spark{position:absolute;left:12px;right:12px;bottom:7px;height:22px}
+    .main{display:grid;grid-template-columns:21% 52% 27%;gap:10px;height:calc(100% - 260px);margin-top:10px}.col{display:grid;gap:10px}.left{grid-template-rows:27% 27% 46%}.center{grid-template-rows:58% 42%}.right{grid-template-rows:24% 29% 27% 20%}
+    .panel{position:relative;padding:13px;overflow:hidden}.panel-title{font-size:19px;line-height:1.2;margin-bottom:5px}.unit{color:#a6c9ea;font-size:13px;margin-bottom:6px}.chart{width:100%;height:calc(100% - 38px)}
+    .map-title{text-align:center;font-size:25px;line-height:1.15;margin:0 0 5px}.map-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;height:50px;margin-bottom:8px}.map-metric{border:1px solid rgba(48,166,241,.42);background:linear-gradient(180deg,rgba(11,58,105,.78),rgba(6,28,55,.7));border-radius:6px;padding:7px 10px}.map-metric span{display:block;color:#a9cdec;font-size:12px}.map-metric b{display:block;margin-top:3px;color:#fff;font-size:20px;line-height:1}.map-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;height:calc(100% - 101px)}.map-box{position:relative;border-right:1px solid rgba(60,184,255,.35)}.map-box:last-child{border-right:0}.map{width:100%;height:calc(100% - 48px)}
+    .map-stats{position:absolute;top:52px;right:10px;width:148px;padding:8px 10px;border:1px solid rgba(71,185,255,.34);border-radius:6px;background:rgba(3,18,36,.66);backdrop-filter:blur(4px);font-size:12px;color:#cfe8ff}.map-stats strong{display:block;margin-bottom:5px;color:#fff;font-size:13px}.map-stats p{display:flex;justify-content:space-between;margin:4px 0}.map-stats em{font-style:normal;color:#36f0ff}
+    .fallback-note{position:absolute;right:12px;bottom:8px;color:#8fb8dc;font-size:12px}
+    .legend{position:absolute;left:12px;bottom:6px;display:flex;gap:14px;color:#f4fbff;font-size:14px}.legend i{display:inline-block;width:24px;height:3px;margin-right:6px;vertical-align:middle;border-radius:3px}.cargo{background:#ffc02f}.cash{background:#58ff8e}
+    .bar-row{display:grid;grid-template-columns:28px 54px 1fr 72px;gap:8px;align-items:center;margin:10px 0;font-size:16px}.rank{background:#344f70;border-radius:5px;text-align:center;padding:3px 0}.bar{height:13px;border-radius:8px;background:#071b33;overflow:hidden}.bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#2d62ff,#34e8ff)}
+    table{width:100%;border-collapse:collapse;font-size:14px;color:#e8f6ff}th,td{padding:8px 7px;border-bottom:1px solid rgba(55,137,202,.2);text-align:left}th{color:#c2ddf7;background:rgba(20,70,110,.36)}.status{color:#37ffa2}.risk{color:#ffd25a}
+    .footer{position:absolute;left:24px;right:24px;bottom:7px;display:flex;justify-content:space-between;color:#a8c5df;font-size:13px}
+    @media (max-width:1200px){h1{font-size:28px}.sub{font-size:14px}.nav span{font-size:14px;min-width:88px}.time{font-size:22px}.chip{font-size:12px;min-width:58px;padding:7px 8px}.kpi .value{font-size:24px}.panel-title{font-size:16px}table{font-size:12px}}
+  </style>
+</head>
+<body>
+<div class="screen">
+  <div class="header">
+    <div></div>
+    <div class="title-block"><h1>CFO 经营管理驾驶舱</h1><div class="sub">经营全景洞察 · 财务绩效 · 供应链与现金流联动</div></div>
+    <div class="top"><div><div class="time" id="clock">10:30:00</div><div id="dateText">2026-05-30 星期六</div></div><div class="chip">USD</div><div class="chip">自动刷新<br>60s</div><div class="chip">UTC+8</div><button class="chip" id="fullscreenBtn" type="button">全屏</button></div>
+  </div>
+  <div class="nav"><span class="active">总览</span><span>财务表现</span><span>销售分析</span><span>供应链运营</span><span>预算与预测</span><span>现金流</span><span>风险与合规</span><span>报告中心</span></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="main">
+    <div class="col left">
+      <div class="card panel"><div class="panel-title">收入结构分析 (YTD)</div><div class="unit">单位：USD</div><div id="donut1" class="chart"></div></div>
+      <div class="card panel"><div class="panel-title">费用结构分析 (YTD)</div><div class="unit">单位：USD</div><div id="donut2" class="chart"></div></div>
+      <div class="card panel"><div class="panel-title">关键财务指标趋势</div><div class="unit">最近 12 个月</div><div id="line1" class="chart"></div></div>
+    </div>
+    <div class="col center">
+      <div class="card panel">
+        <h2 class="map-title">收入地域分布图（按收入规模）</h2>
+        <div class="map-metrics" id="mapMetrics"></div>
+        <div class="map-wrap">
+          <div class="map-box"><div class="panel-title">全球收入分布</div><div class="unit">货物流向与资金流向动态叠加</div><div id="worldStats" class="map-stats"></div><div id="world" class="map"></div><div class="legend"><span><i class="cargo"></i>货流方向</span><span><i class="cash"></i>资金流方向</span></div></div>
+          <div class="map-box"><div class="panel-title">国内收入分布（省市）</div><div class="unit">重点区域：广东、上海、北京、江苏、浙江</div><div id="chinaStats" class="map-stats"></div><div id="china" class="map"></div><div class="legend"><span><i class="cargo"></i>货流方向</span><span><i class="cash"></i>资金流方向</span></div></div>
+        </div>
+      </div>
+      <div class="card panel"><div class="panel-title">主流订单概览</div><table id="orders"></table></div>
+    </div>
+    <div class="col right">
+      <div class="card panel"><div class="panel-title">区域业绩排名 (YTD)</div><div id="ranking"></div></div>
+      <div class="card panel"><div class="panel-title">现金流趋势</div><div id="cash" class="chart"></div></div>
+      <div class="card panel"><div class="panel-title">应收账款分析</div><div id="donut3" class="chart"></div></div>
+      <div class="card panel"><div class="panel-title">关键提醒</div><table id="alerts"></table></div>
+    </div>
+  </div>
+  <div class="footer"><span>数据来源：ERP / WMS / TMS / 财务系统</span><span id="updated">最后更新：2026-05-30 10:30:00 (UTC+8)</span><span>注：所有金额单位为 USD</span></div>
+</div>
+<script>
+const dashboardData={
+  kpis:[
+    ['营业收入 (YTD)','128.45M','同比 ↑ 23.6%','#16b9ff'],['毛利 (YTD)','26.78M','同比 ↑ 19.8%','#6cff4a'],['毛利率 (YTD)','20.9%','同比 ↑ 1.8pp','#b75cff'],['净利润 (YTD)','6.72M','同比 ↑ 17.5%','#ffa400'],['现金余额','15.32M','较上月 ↑ 1.45M','#10ffd4'],['经营现金流 (YTD)','8.11M','同比 ↑ 21.3%','#23d2ff'],['回款金额 (YTD)','18.74M','同比 ↑ 22.1%','#ffb21f']
+  ],
+  revenue:[['中东',42],['欧洲',35],['非洲',18],['亚太',17],['其他',14]],
+  expense:[['采购成本',48],['物流仓储',24],['渠道费用',16],['管理费用',11],['其他',8]],
+  ar:[['0-30天',14],['31-60天',7],['61-90天',3],['90天以上',1.68]],
+  months:['06','07','08','09','10','11','12','01','02','03','04','05'],
+  trend:{营业收入:[70,74,75,88,82,83,91,90,91,92,94,105],毛利:[45,50,48,61,58,55,54,66,66,66,70,71],净利润:[22,24,25,30,26,25,33,27,28,32,34,39]},
+  cash:{经营现金流:[8,12,3,7,17,9,12,6,11,4,16,5],投资现金流:[-2,-4,-1,-8,-15,-7,-6,-10,-4,-8,-3,-5],筹资现金流:[5,9,0,4,8,6,10,3,7,2,11,4],现金余额:[6,13,15,22,12,18,17,16,16,18,22,28]},
+  worldRevenue:[['China',66],['United States',29],['Germany',24],['France',16],['United Kingdom',18],['United Arab Emirates',38],['Saudi Arabia',31],['South Africa',14],['Australia',12],['Brazil',10]],
+  chinaRevenue:[['广东',36],['上海',28],['北京',25],['江苏',24],['浙江',22],['山东',16],['四川',12],['湖北',10],['福建',9],['陕西',8]],
+  globalFlows:{
+    cargo:[[[113.26,23.13],[55.27,25.2]],[[113.26,23.13],[8.68,50.11]],[[113.26,23.13],[-74.0,40.7]]],
+    cash:[[[55.27,25.2],[113.26,23.13]],[[8.68,50.11],[113.26,23.13]],[[-74.0,40.7],[113.26,23.13]]]
+  },
+  chinaFlows:{
+    cargo:[[[113.26,23.13],[121.47,31.23]],[[113.26,23.13],[116.4,39.9]],[[113.26,23.13],[120.15,30.28]]],
+    cash:[[[121.47,31.23],[113.26,23.13]],[[116.4,39.9],[113.26,23.13]],[[120.15,30.28],[113.26,23.13]]]
+  },
+  rankings:[['中东','42.35M',96],['欧洲','35.42M',82],['非洲','18.32M',52],['亚太','17.85M',46]],
+  orders:[['海运运输中',32,'12.74M','2026-06-05','进行中'],['迪拜仓储',21,'5.18M','2026-06-06','正常'],['沙特配送中',18,'7.26M','2026-06-07','进行中'],['合计',71,'25.18M','-','-']],
+  alerts:[['汇率波动较大，关注汇率走势','高'],['部分客户回款周期延长','中'],['海运时效延迟，提前备货','中']]
+};
+const textStyle={color:'#eaf7ff',fontFamily:'Source Han Sans SC, Microsoft YaHei, SimHei',fontWeight:700};
+const charts=[];
+function init(id){const c=echarts.init(document.getElementById(id));charts.push(c);return c}
+function renderStatic(){
+  document.getElementById('kpis').innerHTML=dashboardData.kpis.map((k,i)=>`<div class="card kpi"><div class="label">${k[0]}</div><div class="value">${k[1]}</div><div class="up">${k[2]}</div><div id="s${i}" class="spark"></div></div>`).join('');
+  dashboardData.kpis.forEach((k,i)=>spark(`s${i}`,k[3]));
+  document.getElementById('ranking').innerHTML=dashboardData.rankings.map((r,i)=>`<div class="bar-row"><span class="rank">${i+1}</span><span>${r[0]}</span><div class="bar"><i style="width:${r[2]}%"></i></div><span>${r[1]}</span></div>`).join('');
+  document.getElementById('orders').innerHTML='<tr><th>阶段</th><th>订单数</th><th>在途金额</th><th>预计到达</th><th>状态</th></tr>'+dashboardData.orders.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td class="status">${r[4]}</td></tr>`).join('');
+  document.getElementById('alerts').innerHTML='<tr><th>提醒事项</th><th>状态</th></tr>'+dashboardData.alerts.map(r=>`<tr><td>${r[0]}</td><td class="risk">${r[1]}</td></tr>`).join('');
+  document.getElementById('mapMetrics').innerHTML=[
+    ['全球收入','128.45M'],['覆盖国家/地区','38'],['回款完成率','86.4%'],['在途订单金额','25.18M']
+  ].map(m=>`<div class="map-metric"><span>${m[0]}</span><b>${m[1]}</b></div>`).join('');
+  document.getElementById('worldStats').innerHTML='<strong>全球 Top 区域</strong>'+dashboardData.revenue.slice(0,4).map(r=>`<p><span>${r[0]}</span><em>${r[1]}M</em></p>`).join('');
+  document.getElementById('chinaStats').innerHTML='<strong>国内 Top 省市</strong>'+dashboardData.chinaRevenue.slice(0,4).map(r=>`<p><span>${r[0]}</span><em>${r[1]}M</em></p>`).join('');
+}
+function spark(id,color){init(id).setOption({grid:{left:0,right:0,top:2,bottom:0},xAxis:{show:false,type:'category',data:dashboardData.months},yAxis:{show:false,type:'value'},series:[{type:'line',smooth:true,symbol:'none',lineStyle:{width:2,color},areaStyle:{opacity:.14,color},data:Array.from({length:12},(_,i)=>20+Math.round(Math.sin(i*.9)*8+i*1.4+Math.random()*6))}]})}
+function donut(id,title,total,data){init(id).setOption({tooltip:{trigger:'item'},legend:{right:4,top:10,orient:'vertical',textStyle},series:[{type:'pie',radius:['55%','78%'],center:['28%','50%'],label:{show:false},data:data.map(([name,value])=>({name,value}))},{type:'pie',radius:['0%','0%'],center:['28%','50%'],label:{position:'center',formatter:`${total}\n${title}`,fontSize:20,color:'#fff',fontWeight:700},data:[{value:1}]}]})}
+function lineChart(id,seriesMap){init(id).setOption({textStyle,grid:{left:42,right:24,top:28,bottom:28},legend:{top:0,textStyle,data:Object.keys(seriesMap)},xAxis:{type:'category',axisLabel:{color:'#d8ecff'},data:dashboardData.months},yAxis:{type:'value',axisLabel:{color:'#d8ecff'},splitLine:{lineStyle:{color:'rgba(120,180,255,.12)'}}},series:Object.entries(seriesMap).map(([name,data])=>({name,type:'line',smooth:true,symbol:'circle',symbolSize:5,data}))})}
+function cashChart(){init('cash').setOption({textStyle,grid:{left:42,right:20,top:28,bottom:26},legend:{top:0,textStyle,data:Object.keys(dashboardData.cash)},xAxis:{type:'category',axisLabel:{color:'#d8ecff'},data:dashboardData.months},yAxis:{type:'value',axisLabel:{color:'#d8ecff'},splitLine:{lineStyle:{color:'rgba(120,180,255,.12)'}}},series:Object.entries(dashboardData.cash).map(([name,data])=>({name,type:name==='现金余额'?'line':'bar',data}))})}
+function mapOption(mapName,areaData,flows,zoom,center){
+  const cargo=flows.cargo.map(v=>({coords:v}));
+  const cash=flows.cash.map(v=>({coords:v}));
+  return {textStyle,tooltip:{trigger:'item'},visualMap:{show:false,min:0,max:70,inRange:{color:['#11365d','#156cff','#24c6ff','#7df5ff']}},geo:{map:mapName,roam:false,zoom,center,itemStyle:{areaColor:'#09294b',borderColor:'#49b7ff',borderWidth:.8},emphasis:{itemStyle:{areaColor:'#1e86ff'},label:{color:'#fff'}}},series:[
+    {type:'map',map:mapName,geoIndex:0,data:areaData.map(([name,value])=>({name,value}))},
+    {name:'货流方向',type:'lines',coordinateSystem:'geo',zlevel:3,effect:{show:true,period:4,trailLength:.22,symbol:'arrow',symbolSize:7,color:'#ffc02f'},lineStyle:{color:'#ffc02f',width:1.8,opacity:.9,curveness:.25},data:cargo},
+    {name:'资金流方向',type:'lines',coordinateSystem:'geo',zlevel:3,effect:{show:true,period:5,trailLength:.18,symbol:'circle',symbolSize:6,color:'#58ff8e'},lineStyle:{color:'#58ff8e',width:1.8,opacity:.9,curveness:-.25,type:'dashed'},data:cash}
+  ]};
+}
+function fallbackMapOption(kind){
+  const isChina=kind==='china';
+  const points=isChina
+    ? [['广东',72,25,36],['上海',82,48,28],['北京',68,70,25],['江苏',78,55,24],['浙江',80,40,22],['山东',70,58,16],['四川',45,42,12],['湖北',61,45,10]]
+    : [['中国',72,48,66],['中东',56,43,38],['欧洲',45,66,24],['北美',22,60,29],['非洲',47,34,14],['澳洲',82,24,12],['南美',28,28,10]];
+  const cargo=isChina
+    ? [[[72,25],[82,48]],[[72,25],[68,70]],[[72,25],[80,40]]]
+    : [[[72,48],[56,43]],[[72,48],[45,66]],[[72,48],[22,60]]];
+  const cash=cargo.map(([a,b])=>[b,a]);
+  const regions=isChina
+    ? [{name:'华南',x:66,y:22,w:26,h:20},{name:'华东',x:70,y:42,w:24,h:24},{name:'华北',x:60,y:62,w:24,h:24},{name:'西南',x:34,y:34,w:27,h:23},{name:'西北',x:28,y:58,w:28,h:24}]
+    : [{name:'北美',x:10,y:50,w:24,h:24},{name:'南美',x:21,y:16,w:18,h:25},{name:'欧洲',x:39,y:58,w:16,h:17},{name:'中东',x:53,y:38,w:14,h:14},{name:'非洲',x:41,y:25,w:18,h:26},{name:'亚太',x:65,y:36,w:23,h:22},{name:'澳洲',x:76,y:18,w:16,h:12}];
+  const mapShapes=isChina
+    ? [
+      [[42,74],[55,81],[70,78],[81,70],[88,58],[84,44],[91,32],[79,23],[64,25],[54,18],[45,27],[31,30],[22,41],[28,54],[35,59]],
+      [[74,47],[81,53],[79,61],[71,62],[68,55]]
+    ]
+    : [
+      [[7,62],[15,76],[27,72],[34,61],[28,50],[19,46],[10,51]],
+      [[25,42],[35,35],[31,20],[24,11],[18,24]],
+      [[41,69],[50,72],[57,64],[52,55],[42,57]],
+      [[48,51],[58,45],[61,32],[53,18],[43,27],[41,40]],
+      [[58,61],[72,70],[88,62],[91,49],[79,40],[65,45]],
+      [[75,26],[88,30],[94,20],[86,12],[75,16]]
+    ];
+  return {textStyle,grid:{left:8,right:8,top:8,bottom:8},xAxis:{show:false,min:0,max:100},yAxis:{show:false,min:0,max:100},tooltip:{trigger:'item'},series:[
+    {type:'custom',silent:true,z:-2,renderItem:(params,api)=>{const pts=mapShapes[params.dataIndex].map(p=>api.coord(p));return {type:'polygon',shape:{points:pts},style:{fill:'rgba(20,102,178,.26)',stroke:'rgba(74,190,255,.42)',lineWidth:1.2,shadowBlur:14,shadowColor:'rgba(36,198,255,.18)'}}},data:mapShapes.map((_,i)=>i)},
+    {type:'custom',silent:true,renderItem:(params,api)=>{const r=regions[params.dataIndex];const p=api.coord([r.x,r.y]);const p2=api.coord([r.x+r.w,r.y+r.h]);return {type:'rect',shape:{x:p[0],y:p2[1],width:p2[0]-p[0],height:p[1]-p2[1]},style:{fill:'rgba(18,93,165,.34)',stroke:'rgba(73,183,255,.55)',lineWidth:1}}},data:regions.map((_,i)=>i)},
+    {type:'custom',silent:true,renderItem:(params,api)=>{const r=regions[params.dataIndex];return {type:'text',style:{text:r.name,x:api.coord([r.x+r.w/2,r.y+r.h/2])[0],y:api.coord([r.x+r.w/2,r.y+r.h/2])[1],fill:'#9fd8ff',font:'700 14px Source Han Sans SC',textAlign:'center',textVerticalAlign:'middle'}}},data:regions.map((_,i)=>i)},
+    {name:'收入规模',type:'effectScatter',coordinateSystem:'cartesian2d',symbolSize:v=>Math.max(12,v[2]*.62),rippleEffect:{brushType:'stroke',scale:3},label:{show:true,formatter:p=>p.name,color:'#fff',fontWeight:700,fontSize:14,position:'right'},itemStyle:{color:'#31dfff',shadowBlur:16,shadowColor:'#24c6ff'},data:points.map(p=>({name:p[0],value:[p[1],p[2],p[3]]}))},
+    {name:'货流方向',type:'lines',coordinateSystem:'cartesian2d',zlevel:3,effect:{show:true,period:4,trailLength:.24,symbol:'arrow',symbolSize:8,color:'#ffc02f'},lineStyle:{color:'#ffc02f',width:2,opacity:.92,curveness:.24},data:cargo.map(coords=>({coords}))},
+    {name:'资金流方向',type:'lines',coordinateSystem:'cartesian2d',zlevel:3,effect:{show:true,period:5,trailLength:.2,symbol:'circle',symbolSize:6,color:'#58ff8e'},lineStyle:{color:'#58ff8e',width:2,opacity:.92,curveness:-.24,type:'dashed'},data:cash.map(coords=>({coords}))}
+  ],graphic:{type:'text',right:8,bottom:2,style:{text:'演示数据',fill:'#8fb8dc',font:'700 12px Source Han Sans SC'}}};
+}
+function loadScript(url){
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src=url;
+    s.onload=resolve;
+    s.onerror=reject;
+    document.head.appendChild(s);
+  });
+}
+async function renderMaps(){
+  const worldChart=init('world');
+  const chinaChart=init('china');
+  worldChart.setOption(fallbackMapOption('world'));
+  chinaChart.setOption(fallbackMapOption('china'));
+  try{
+    await Promise.all([
+      loadScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js'),
+      loadScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js')
+    ]);
+    worldChart.setOption(mapOption('world',dashboardData.worldRevenue,dashboardData.globalFlows,1.06,[35,28]),true);
+    chinaChart.setOption(mapOption('china',dashboardData.chinaRevenue,dashboardData.chinaFlows,1.12,[105,35]),true);
+  }catch(e){
+    worldChart.setOption(fallbackMapOption('world'),true);
+    chinaChart.setOption(fallbackMapOption('china'),true);
+  }
+}
+function tick(){const d=new Date();document.getElementById('clock').textContent=d.toLocaleTimeString('zh-CN',{hour12:false});document.getElementById('dateText').textContent=d.toLocaleDateString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',weekday:'long'});document.getElementById('updated').textContent='最后更新：'+d.toLocaleString('zh-CN',{hour12:false})+' (UTC+8)'}
+function bindFullscreen(){
+  const screen=document.querySelector('.screen');
+  const btn=document.getElementById('fullscreenBtn');
+  btn.addEventListener('click',async()=>{
+    if(!document.fullscreenElement){await screen.requestFullscreen();}
+    else{await document.exitFullscreen();}
+  });
+  document.addEventListener('fullscreenchange',()=>{
+    btn.textContent=document.fullscreenElement?'退出全屏':'全屏';
+    setTimeout(()=>charts.forEach(c=>c.resize()),120);
+  });
+}
+renderStatic();donut('donut1','总收入','128.45M',dashboardData.revenue);donut('donut2','总费用','21.24M',dashboardData.expense);donut('donut3','总应收账款','25.68M',dashboardData.ar);lineChart('line1',dashboardData.trend);cashChart();renderMaps();tick();bindFullscreen();setInterval(tick,1000);window.addEventListener('resize',()=>charts.forEach(c=>c.resize()));
+</script>
+</body>
+</html>
