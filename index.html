@@ -17,7 +17,7 @@
     .title-block{text-align:center}
     h1{margin:0;font-size:34px;line-height:1.12;letter-spacing:0;text-shadow:0 0 16px rgba(44,180,255,.58)}
     .sub{margin-top:9px;color:#a9cdec;font-size:17px}
-    .top{display:flex;gap:10px;align-items:center;justify-content:flex-end;color:#dcefff;font-size:15px;text-align:center}.time{font-size:29px;color:#fff}.chip{min-width:70px;border:1px solid rgba(59,174,255,.52);border-radius:6px;padding:9px 10px;background:rgba(5,30,58,.78);box-shadow:inset 0 0 18px rgba(33,152,255,.12)}button.chip{color:#dcefff;font:inherit;font-weight:700;cursor:pointer}
+    .clock-block{justify-self:start;color:#dcefff;font-size:15px;text-align:left}.time{font-size:29px;color:#fff}.top{display:flex;gap:10px;align-items:center;justify-content:flex-end;color:#dcefff;font-size:15px;text-align:center}.chip{min-width:70px;border:1px solid rgba(59,174,255,.52);border-radius:6px;padding:9px 10px;background:rgba(5,30,58,.78);box-shadow:inset 0 0 18px rgba(33,152,255,.12)}button.chip{color:#dcefff;font:inherit;font-weight:700;cursor:pointer}
     .nav{display:flex;gap:12px;border-bottom:1px solid rgba(42,145,215,.42);min-height:0}.nav span{min-width:112px;text-align:center;padding:9px 10px;color:#d9ecff;font-size:16px}.nav .active{background:linear-gradient(180deg,#0d69db,#0a376e);border-bottom:2px solid #32e5ff;border-radius:4px 4px 0 0}
     .kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;min-height:0}.card{background:linear-gradient(180deg,rgba(9,43,80,.95),rgba(4,23,45,.94));border:1px solid rgba(53,153,226,.54);border-radius:7px;box-shadow:inset 0 0 18px rgba(35,141,255,.09),0 0 14px rgba(0,104,255,.09)}
     .kpi{padding:13px 14px;position:relative}.kpi .label{color:#e7f4ff;font-size:16px;white-space:nowrap}.kpi .value{margin-top:8px;font-size:30px;line-height:1}.kpi .up{margin-top:9px;color:#2cffb1;font-size:15px}.spark{position:absolute;left:12px;right:12px;bottom:7px;height:22px}
@@ -30,15 +30,15 @@
     .bar-row{display:grid;grid-template-columns:28px 54px 1fr 72px;gap:8px;align-items:center;margin:10px 0;font-size:16px}.rank{background:#344f70;border-radius:5px;text-align:center;padding:3px 0}.bar{height:13px;border-radius:8px;background:#071b33;overflow:hidden}.bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#2d62ff,#34e8ff)}
     table{width:100%;border-collapse:collapse;font-size:14px;color:#e8f6ff}th,td{padding:8px 7px;border-bottom:1px solid rgba(55,137,202,.2);text-align:left}th{color:#c2ddf7;background:rgba(20,70,110,.36)}.status{color:#37ffa2}.risk{color:#ffd25a}
     .footer{display:flex;justify-content:space-between;align-items:end;color:#a8c5df;font-size:12px;min-height:0;overflow:hidden}
-    @media (max-width:1200px){.screen{grid-template-rows:60px 34px 98px minmax(0,1fr) 18px;padding:10px 14px 8px;gap:6px}h1{font-size:25px}.sub{font-size:13px;margin-top:5px}.nav span{font-size:13px;min-width:82px;padding:8px 7px}.time{font-size:20px}.chip{font-size:11px;min-width:54px;padding:6px 7px}.kpi{padding:9px}.kpi .label{font-size:13px}.kpi .value{font-size:21px}.kpi .up{font-size:12px}.panel{padding:8px}.panel-title{font-size:15px}.map-title{font-size:19px}.map-metric b{font-size:15px}table{font-size:11px}th,td{padding:5px 4px}.footer{font-size:10px}}
+    @media (max-width:1200px){.screen{grid-template-rows:60px 34px 98px minmax(0,1fr) 18px;padding:10px 14px 8px;gap:6px}h1{font-size:25px}.sub{font-size:13px;margin-top:5px}.nav span{font-size:13px;min-width:82px;padding:8px 7px}.clock-block{font-size:11px}.time{font-size:20px}.chip{font-size:11px;min-width:54px;padding:6px 7px}.kpi{padding:9px}.kpi .label{font-size:13px}.kpi .value{font-size:21px}.kpi .up{font-size:12px}.panel{padding:8px}.panel-title{font-size:15px}.map-title{font-size:19px}.map-metric b{font-size:15px}table{font-size:11px}th,td{padding:5px 4px}.footer{font-size:10px}}
   </style>
 </head>
 <body>
 <div class="screen">
   <div class="header">
-    <div></div>
+    <div class="clock-block"><div class="time" id="clock">10:30:00</div><div id="dateText">2026-05-30 星期六</div></div>
     <div class="title-block"><h1>CFO 经营管理驾驶舱</h1><div class="sub">经营全景洞察 · 财务绩效 · 供应链与现金流联动</div></div>
-    <div class="top"><div><div class="time" id="clock">10:30:00</div><div id="dateText">2026-05-30 星期六</div></div><div class="chip">USD</div><div class="chip">自动刷新<br>60s</div><div class="chip">UTC+8</div><button class="chip" id="fullscreenBtn" type="button">全屏</button></div>
+    <div class="top"><div class="chip">USD</div><div class="chip">自动刷新<br>60s</div><div class="chip">UTC+8</div><button class="chip" id="fullscreenBtn" type="button">全屏</button></div>
   </div>
   <div class="nav"><span class="active">总览</span><span>财务表现</span><span>销售分析</span><span>供应链运营</span><span>预算与预测</span><span>现金流</span><span>风险与合规</span><span>报告中心</span></div>
   <div class="kpis" id="kpis"></div>
